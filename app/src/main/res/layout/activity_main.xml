@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#dccfe1"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/Menu"
+            android:layout_width="176dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:padding="40dp"
+            android:text="Menu"
+            android:textColor="#4b0082"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/b1"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_buttons"
+            android:padding="5dp"
+            android:text="Dodaj zarobek"
+            android:textColor="#4b0082"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/b2"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_buttons_lighter"
+            android:padding="5dp"
+            android:text="zobacz rejestr"
+            android:textColor="#4b0082"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/b3"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_buttons"
+            android:padding="5dp"
+            android:text="Importuj dane do pliku"
+            android:textColor="#4b0082"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/b4"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_buttons_lighter"
+            android:padding="5dp"
+            android:text="Dodaj posadę"
+            android:textColor="#4b0082"
+            android:textSize="20dp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
