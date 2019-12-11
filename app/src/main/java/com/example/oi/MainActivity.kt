@@ -32,11 +32,11 @@ class MainActivity : AppCompatActivity() {
 
 
         val cursor: Cursor?
-        cursor = db.rawQuery("SELECT * FROM ${Table1Info.TABLE_NAME}", null)
+        cursor = db.rawQuery("SELECT COUNT(*) FROM ${Table1Info.TABLE_NAME}", null)
         val cursor2: Cursor?
-        cursor2 = db.rawQuery("SELECT * FROM ${Table2Info.TABLE_NAME}", null)
+        cursor2 = db.rawQuery("SELECT COUNT(*) FROM ${Table2Info.TABLE_NAME}", null)
 
-
+//region
 //        b1.setEnabled(cursor2!=null)
 //
 //        b3.setEnabled(cursor2!=null && cursor!=null)
@@ -72,6 +72,8 @@ class MainActivity : AppCompatActivity() {
 //
 //
 //        }
+        //endregion
+
 
 //region
     //if(cursor2!=null && cursor!=null){
@@ -99,28 +101,31 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
         //endregion
+        if(cursor2!=null) {
 
-
-        b1.setOnClickListener {
+            b1.setOnClickListener {
                 val intent = Intent(this, dodajZarobek::class.java)
-            if(cursor2!=null) {
-                startActivity(intent)
-            }
-        }
 
-
-        b2.setOnClickListener {
-            val intent = Intent(this, ZobaczRejestr::class.java)
-            if(cursor2!=null && cursor!=null) {
                 startActivity(intent)
             }
 
-        }
+            if (cursor2 != null && cursor != null) {
 
-        b3.setOnClickListener {
-            val intent = Intent(this, ImportujDaneDoPliku::class.java)
-            if(cursor2!=null && cursor!=null) {
-                startActivity(intent)
+
+                b2.setOnClickListener {
+                    val intent = Intent(this, ZobaczRejestr::class.java)
+
+                    startActivity(intent)
+                }
+
+
+
+                b3.setOnClickListener {
+                    val intent = Intent(this, ImportujDaneDoPliku::class.java)
+
+                    startActivity(intent)
+
+                }
             }
         }
 

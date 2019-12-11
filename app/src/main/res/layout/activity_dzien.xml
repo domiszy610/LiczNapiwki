@@ -49,6 +49,8 @@
         android:layout_width="110dp"
         android:layout_height="49dp"
         android:text="POKAŻ"
+        android:textColor="#4b0082"
+        android:background="@drawable/round_buttons"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.857"
