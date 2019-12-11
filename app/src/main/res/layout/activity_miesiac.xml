@@ -6,4 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".Miesiac">
 
+    <Spinner
+        android:id="@+id/spinner_mies"
+        android:layout_width="211dp"
+        android:layout_height="33dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rVMiesiac"
+        android:layout_width="394dp"
+        android:layout_height="445dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.923"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.258" />
+
+    <TextView
+        android:id="@+id/suma_miesiac"
+        android:layout_width="322dp"
+        android:layout_height="56dp"
+        android:text="Suma:"
+        android:textColor="#321266"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.179"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.813" />
+
+    <Button
+        android:id="@+id/pokazM_b"
+        android:layout_width="110dp"
+        android:layout_height="49dp"
+        android:text="POKAŻ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.021" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,12 +8,29 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_calosc"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="609dp"
+        android:layout_marginBottom="40dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_suma"
+        android:layout_width="362dp"
+        android:layout_height="68dp"
+        android:text="Suma:"
+        android:textColor="#321266"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_calosc"
+        app:layout_constraintVertical_bias="0.314" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,8 @@ import java.lang.ArithmeticException
 
 class DodawaniePosady : AppCompatActivity() {
 
+/////////////////////////////////////////////////////////////////////////////////////////buClickValue = buClickValue.replace(",", ".") ZROBIć na WPROWADZANIE !!!!!!!!!!!!!!!!!!!!!
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
