@@ -180,7 +180,7 @@ class Calosc : AppCompatActivity() {
         var Godziny_Obl =arrayListOf<Double>(Godziny[0].toDouble())
         var Napiwki_Obl = arrayListOf<Double>(Napiwki[0].toDouble())
 
-        for (i in 1..Stawki_Obl.count()-1){
+        for (i in 1..Stawki.count()-1){
             Stawki_Obl.add(Stawki[i].toDouble())
             Godziny_Obl.add(Godziny[i].toDouble())
             Napiwki_Obl.add(Napiwki[i].toDouble())
@@ -189,7 +189,7 @@ class Calosc : AppCompatActivity() {
         var Suma:Double = (Stawki_Obl[0]*Godziny_Obl[0])
         Suma+=Napiwki_Obl[0]
 
-        for(i in 1..Stawki_Obl.count()-1){
+        for(i in 1..Stawki.count()-1){
             Suma+=(Stawki_Obl[i]*Godziny_Obl[i])
             Suma+=Napiwki_Obl[i]
 

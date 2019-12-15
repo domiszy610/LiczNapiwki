@@ -137,7 +137,7 @@ class dodajZarobek : AppCompatActivity() {
                             id_posady = cursor.getInt(0)
                         }
                     }
-                    cursor.close()
+
                 }
 
 
@@ -193,7 +193,7 @@ class dodajZarobek : AppCompatActivity() {
                             id_aktywnosci = cursor3.getInt(0)
                         }
                     }
-                    cursor3.close()
+
 
                 }
 

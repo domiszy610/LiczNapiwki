@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import androidx.core.database.getStringOrNull
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val b3 = findViewById(R.id.b3) as Button
 
         val dbHelper = DataBaseHelper(applicationContext)
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.writableDatabase
 
 
         b4.setOnClickListener {
@@ -31,10 +32,58 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val cursor: Cursor?
-        cursor = db.rawQuery("SELECT COUNT(*) FROM ${Table1Info.TABLE_NAME}", null)
-        val cursor2: Cursor?
-        cursor2 = db.rawQuery("SELECT COUNT(*) FROM ${Table2Info.TABLE_NAME}", null)
+        val cursor: Cursor? = db.rawQuery("SELECT * FROM ${Table1Info.TABLE_NAME}", null)
+        val cursor2: Cursor?= db.rawQuery("SELECT * FROM ${Table2Info.TABLE_NAME}", null)
+        if (cursor != null) {
+            if (cursor2 != null) {
+                if(cursor.count==-1|| cursor2.count==-1  ){
+                    b2.isEnabled = false
+                    b2.isClickable = false
+
+                    b3.isEnabled =false
+                    b3.isClickable=false
+
+
+                        if(cursor2.count==-1 ) {
+                            b1.isClickable = false
+                            b1.isEnabled = false
+
+
+                        }
+
+
+                } else{
+                    b1.isClickable = true
+                    b1.isEnabled = true
+
+                    b2.isEnabled = true
+                    b2.isClickable = true
+
+                    b3.isEnabled =true
+                    b3.isClickable=true
+
+                    b1.setOnClickListener {
+                        val intent = Intent(this, dodajZarobek::class.java)
+
+                        startActivity(intent)
+                    }
+
+                    b2.setOnClickListener {
+                        val intent = Intent(this, ZobaczRejestr::class.java)
+
+                        startActivity(intent)
+                    }
+                    b3.setOnClickListener {
+                        val intent = Intent(this, ImportujDaneDoPliku::class.java)
+
+                        startActivity(intent)
+
+                    }
+                }
+            }
+        }
+
+
 
 //region
 //        b1.setEnabled(cursor2!=null)
@@ -101,33 +150,33 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
         //endregion
-        if(cursor2!=null) {
-
-            b1.setOnClickListener {
-                val intent = Intent(this, dodajZarobek::class.java)
-
-                startActivity(intent)
-            }
-
-            if (cursor2 != null && cursor != null) {
-
-
-                b2.setOnClickListener {
-                    val intent = Intent(this, ZobaczRejestr::class.java)
-
-                    startActivity(intent)
-                }
-
-
-
-                b3.setOnClickListener {
-                    val intent = Intent(this, ImportujDaneDoPliku::class.java)
-
-                    startActivity(intent)
-
-                }
-            }
-        }
+//        if(cursor2!=null) {
+//
+//            b1.setOnClickListener {
+//                val intent = Intent(this, dodajZarobek::class.java)
+//
+//                startActivity(intent)
+//            }
+//
+//            if (cursor2 != null && cursor != null) {
+//
+//
+//                b2.setOnClickListener {
+//                    val intent = Intent(this, ZobaczRejestr::class.java)
+//
+//                    startActivity(intent)
+//                }
+//
+//
+//
+//                b3.setOnClickListener {
+//                    val intent = Intent(this, ImportujDaneDoPliku::class.java)
+//
+//                    startActivity(intent)
+//
+//                }
+//            }
+//        }
 
 
 

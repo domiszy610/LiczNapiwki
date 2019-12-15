@@ -96,7 +96,8 @@ class dzien : AppCompatActivity() {
         var b1 = findViewById(R.id.pokazD_b) as Button
         b1.setOnClickListener {
             val cursor1: Cursor = db.rawQuery(
-                "SELECT * FROM ${Table1Info.TABLE_NAME} WHERE ${Table1Info.TABLE_COLUMN_DATA}='${miesiac}' ",
+                "SELECT ${Table1Info.TABLE_COLUMN_DATA}, ${Table1Info.TABLE_COLUMN_GODZINY}, ${Table1Info.TABLE_COLUMN_NAPIWEK}, ${Table2Info.TABLE_COLUMN_NAZWA_POSADY}, ${Table2Info.TABLE_COLUMN_STAWKA}  FROM ${Table1Info.TABLE_NAME} " +
+                        "INNER JOIN ${Table2Info.TABLE_NAME} ON ${Table1Info.TABLE_COLUMN_ID_POSADA} = ${Table2Info.TABLE_NAME}.${BaseColumns._ID} WHERE  ${Table1Info.TABLE_COLUMN_DATA} LIKE '${miesiac}'  ",
                 null
             )
 
@@ -105,9 +106,11 @@ class dzien : AppCompatActivity() {
 
             if (cursor1 != null) {
                 cursor1.moveToFirst()
-                data = cursor1.getString(3)
-                godziny = cursor1.getString(2)
-                napiwek = cursor1.getString(1)
+                data = cursor1.getString(0)
+                godziny = cursor1.getString(1)
+                napiwek = cursor1.getString(2)
+                posada = cursor1.getString(3)
+                stawka = cursor1.getString(4)
 
 
 
@@ -116,9 +119,11 @@ class dzien : AppCompatActivity() {
 
 
 
-                    data += " ${cursor1.getString(3)}"
-                    godziny += " ${cursor1.getString(2)}"
-                    napiwek += " ${cursor1.getString(1)}"
+                    data += " ${cursor1.getString(0)}"
+                    godziny += " ${cursor1.getString(1)}"
+                    napiwek += " ${cursor1.getString(2)}"
+                    posada += " ${cursor1.getString(3)}"
+                    stawka += " ${cursor1.getString(4)}"
 
 
                 }
@@ -130,37 +135,7 @@ class dzien : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            val cursor2: Cursor = db.rawQuery(
-                "SELECT ${Table1Info.TABLE_COLUMN_ID_POSADA}, ${Table2Info.TABLE_COLUMN_NAZWA_POSADY}, ${Table2Info.TABLE_COLUMN_STAWKA}   FROM ${Table1Info.TABLE_NAME} " +
-                        "INNER JOIN ${Table2Info.TABLE_NAME} ON ${Table1Info.TABLE_COLUMN_ID_POSADA} = ${Table2Info.TABLE_NAME}.${BaseColumns._ID} ",
-                null
-            )
-            //var ID_posad = id_posady.split(" ").toTypedArray()
-            if (cursor2 != null) {
-                cursor2.moveToFirst()
 
-                posada = "${cursor2.getString(1)}"
-                stawka = "${cursor2.getString(2)}"
-
-
-
-
-
-                for (i in 1..cursor2.getCount() - 1) {
-                    cursor2.moveToNext()
-                    posada += " ${cursor2.getString(1)}"
-                    stawka += " ${cursor2.getString(2)}"
-
-
-                }
-
-            } else {
-                Toast.makeText(
-                    applicationContext,
-                    "Nic nie ma w bazie danych w polu posada!",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
 
 
             var Daty = data.split(" ").toTypedArray()
@@ -193,45 +168,34 @@ class dzien : AppCompatActivity() {
 
             }
 
-            rVDzien.adapter = adapter
-
-
+            rVMiesiac.adapter = adapter
 
 
 
             var Stawki_Obl = arrayListOf<Double>(Stawki[0].toDouble())
-            var Godziny_Obl =  arrayListOf<Double>(Godziny[0].toDouble())
-            var Napiwki_Obl =  arrayListOf<Double>(Napiwki[0].toDouble())
+            var Godziny_Obl = arrayListOf<Double>(Godziny[0].toDouble())
+            var Napiwki_Obl = arrayListOf<Double>(Napiwki[0].toDouble())
 
-            for (i in 1..Stawki_Obl.count() - 1) {
+            for (i in 0..Godziny.count() - 1) {
                 Stawki_Obl.add(Stawki[i].toDouble())
                 Godziny_Obl.add(Godziny[i].toDouble())
                 Napiwki_Obl.add(Napiwki[i].toDouble())
-
             }
 
-            var Suma: Double = (Stawki_Obl[0] * Godziny_Obl[0])
+            var Suma: Double = Stawki_Obl[0] * Godziny_Obl[0]
             Suma += Napiwki_Obl[0]
 
-            for (i in 1..Stawki_Obl.count() - 1) {
+            for (i in 1..Godziny.count() - 1) {
                 Suma += (Stawki_Obl[i] * Godziny_Obl[i])
                 Suma += Napiwki_Obl[i]
 
             }
             var SumaX = Suma.toString()
-            suma_dzien.text = "Suma: " + SumaX
+            suma_miesiac.text = "Suma: " + SumaX
 
 
         }
-
-
-/////////////////////////////////////////////////////////////////////////////////////NWM CZEMU NIE DZIALA
-
-
-
-
     }
-
     class RekordItem2(val rekord: Rekord) : Item<GroupieViewHolder>() {
         override fun getLayout(): Int {
             return R.layout.row
@@ -247,4 +211,6 @@ class dzien : AppCompatActivity() {
 
         }
     }
+
 }
+
