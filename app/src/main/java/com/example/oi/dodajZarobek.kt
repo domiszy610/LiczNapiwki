@@ -5,18 +5,22 @@ import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
 import android.provider.BaseColumns
+import android.text.InputType
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_dodaj_zarobek.*
+import kotlinx.android.synthetic.main.row.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import android.widget.AdapterView.OnItemSelectedListener as OnItemSelectedListener
+
+
 fun convertLongToTime(time: Long): String{
     val date = Date(time)
     val format = SimpleDateFormat("dd.MM.yyyy")
@@ -35,6 +39,9 @@ class dodajZarobek : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dodaj_zarobek)
+
+        et_napiwek.inputType= InputType.TYPE_CLASS_NUMBER.or(InputType.TYPE_NUMBER_FLAG_DECIMAL)
+        et_godziny.inputType= InputType.TYPE_CLASS_NUMBER.or(InputType.TYPE_NUMBER_FLAG_DECIMAL)
 
         val dbHelper = DataBaseHelper(applicationContext)
         val db = dbHelper.writableDatabase

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.DatabaseErrorHandler
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,8 @@ class DodawaniePosady : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dodawanie_posady)
+
+        etstawka.inputType= InputType.TYPE_CLASS_NUMBER.or(InputType.TYPE_NUMBER_FLAG_DECIMAL)
 
         val dbHelper = DataBaseHelper(applicationContext)
         val db = dbHelper.writableDatabase
