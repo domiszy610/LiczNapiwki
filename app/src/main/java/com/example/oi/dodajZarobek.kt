@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.row.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 import android.widget.AdapterView.OnItemSelectedListener as OnItemSelectedListener
@@ -108,6 +109,12 @@ class dodajZarobek : AppCompatActivity() {
 
         var data = ""
 
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        val formatted = current.format(formatter)
+
+        data= formatted
+
 
         var Kalendarz1 = findViewById<CalendarView>(R.id.Kalendarz)
         Kalendarz1?.setOnDateChangeListener { view, year, month, dayOfMonth ->
@@ -120,6 +127,10 @@ class dodajZarobek : AppCompatActivity() {
             } else {
                 data = "" + dayOfMonth + "." + (month + 1) + "." + year
             }
+        }
+
+
+
 
 
 
@@ -205,8 +216,7 @@ class dodajZarobek : AppCompatActivity() {
                 }
 
 
-//             val data_b = Kalendarz1.getDate()
-//            val data = convertLongToTime(data_b)
+
 
 
                 val id_posady1 = id_posady.toString()
@@ -256,4 +266,4 @@ class dodajZarobek : AppCompatActivity() {
     }
 
 
-    }
+

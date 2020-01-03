@@ -88,6 +88,7 @@ class dzien : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
+
                 miesiac = A.get(position)
             }
 
@@ -168,7 +169,7 @@ class dzien : AppCompatActivity() {
 
             }
 
-            rVMiesiac.adapter = adapter
+            rVDzien.adapter = adapter
 
 
 
@@ -191,7 +192,7 @@ class dzien : AppCompatActivity() {
 
             }
             var SumaX = Suma.toString()
-            suma_miesiac.text = "Suma: " + SumaX
+            suma_dzien.text = "Suma: " + SumaX
 
 
         }
