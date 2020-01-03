@@ -35,7 +35,7 @@ object BasicCommand{
     const val DB_NAME = "BAZA_DANYCH"
 
     const val SQL_CREATE_TABLE1: String =
-        "CREATE TABLE ${Table1Info.TABLE_NAME} (" +
+        "CREATE TABLE IF NOT EXISTS ${Table1Info.TABLE_NAME} (" +
                 "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                 "${Table1Info.TABLE_COLUMN_NAPIWEK} TEXT NOT NULL," +
                 "${Table1Info.TABLE_COLUMN_GODZINY} TEXT NOT NULL," +
@@ -46,7 +46,7 @@ object BasicCommand{
     const val SQL_DELETE_TABLE1 = "DROP TABLE IF EXISTS ${Table1Info.TABLE_NAME}"
 
     const val SQL_CREATE_TABLE2: String =
-        "CREATE TABLE ${Table2Info.TABLE_NAME} (" +
+        "CREATE TABLE IF NOT EXISTS ${Table2Info.TABLE_NAME} (" +
                 "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                 "${Table2Info.TABLE_COLUMN_NAZWA_POSADY} TEXT NOT NULL," +
                 "${Table2Info.TABLE_COLUMN_STAWKA} TEXT NOT NULL," +
@@ -55,7 +55,7 @@ object BasicCommand{
     const val SQL_DELETE_TABLE2 = "DROP TABLE IF EXISTS ${Table2Info.TABLE_NAME}"
 
     const val SQL_CREATE_TABLE3: String =
-        "CREATE TABLE ${Table3Info.TABLE_NAME} (" +
+        "CREATE TABLE IF NOT EXISTS ${Table3Info.TABLE_NAME} (" +
                 "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                 "${Table3Info.TABLE_COLUMN_OPIS} TEXT NOT NULL)"
 
@@ -71,9 +71,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME ,null
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL(BasicCommand.SQL_DELETE_TABLE1)
-        db?.execSQL(BasicCommand.SQL_DELETE_TABLE2)
-        db?.execSQL(BasicCommand.SQL_DELETE_TABLE3)
+
         onCreate(db)
 
 

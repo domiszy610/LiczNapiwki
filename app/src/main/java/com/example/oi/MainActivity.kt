@@ -32,8 +32,10 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val cursor: Cursor? = db.rawQuery("SELECT * FROM ${Table1Info.TABLE_NAME}", null)
-        val cursor2: Cursor?= db.rawQuery("SELECT * FROM ${Table2Info.TABLE_NAME}", null)
+        val cursor: Cursor? = db.rawQuery("SELECT COUNT(*) FROM ${Table1Info.TABLE_NAME}", null)
+        val cursor2: Cursor?= db.rawQuery("SELECT COUNT(*) FROM ${Table2Info.TABLE_NAME}", null)
+
+
         if (cursor != null) {
             if (cursor2 != null) {
                 if(cursor.count==-1|| cursor2.count==-1  ){
