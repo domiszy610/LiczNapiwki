@@ -16,14 +16,6 @@ class ZobaczRejestr : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zobacz_rejestr)
 
-        val dbHelper = DataBaseHelper(applicationContext)
-        val db = dbHelper.writableDatabase
-
-        val cursor1: Cursor = db.rawQuery("SELECT * FROM ${Table1Info.TABLE_NAME}", null)
-
-        val cursor2: Cursor = db.rawQuery("SELECT * FROM ${Table2Info.TABLE_NAME}", null)
-
-        val cursor3: Cursor = db.rawQuery("SELECT * FROM ${Table3Info.TABLE_NAME}", null)
 
         menu.setOnClickListener {
             var popup = PopupMenu(this, menu)
@@ -31,21 +23,56 @@ class ZobaczRejestr : AppCompatActivity() {
             popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
                 when (item!!.itemId) {
                     R.id.menu_item_caly -> {
+                        try {
                         val intent = Intent(this, Calosc::class.java)
-                        startActivity(intent)
+
+                            startActivity(intent)
+                        }
+                        catch (e: Exception) {
+
+                            Toast.makeText(
+                                applicationContext,
+                                "Baza danych jest pusta, dodaj dane aby móc zobaczyć rejestr!!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
 
                     }
 
 
                     R.id.menu_item_miesieczny -> {
+                        try {
                         val intent = Intent(this, Miesiac::class.java)
-                        startActivity(intent)
+
+                            startActivity(intent)
+                        }
+                        catch (e: Exception) {
+
+                            Toast.makeText(
+                                applicationContext,
+                                "Baza danych jest pusta, dodaj dane aby móc zobaczyć rejestr!!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
 
 
                     }
                     R.id.menu_item_dzien -> {
+                        try {
                         val intent = Intent(this, dzien::class.java)
-                        startActivity(intent)
+
+                            startActivity(intent)
+                        }
+                        catch (e: Exception) {
+
+                            Toast.makeText(
+                                applicationContext,
+                                "Baza danych jest pusta, dodaj dane aby móc zobaczyć rejestr!!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
 
                     }
                 }

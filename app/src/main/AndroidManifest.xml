@@ -12,7 +12,6 @@
         <activity android:name=".dzien"></activity>
         <activity android:name=".Miesiac" />
         <activity android:name=".Calosc" />
-        <activity android:name=".DodanoPosade" />
         <activity android:name=".ImportujDaneDoPliku" />
         <activity android:name=".ZobaczRejestr" />
         <activity android:name=".dodajZarobek" />
@@ -27,6 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>

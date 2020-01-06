@@ -37,97 +37,102 @@ class dodajZarobek : AppCompatActivity() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dodaj_zarobek)
 
-        et_napiwek.inputType= InputType.TYPE_CLASS_NUMBER.or(InputType.TYPE_NUMBER_FLAG_DECIMAL)
-        et_godziny.inputType= InputType.TYPE_CLASS_NUMBER.or(InputType.TYPE_NUMBER_FLAG_DECIMAL)
 
-        val dbHelper = DataBaseHelper(applicationContext)
-        val db = dbHelper.writableDatabase
-        val A: Array<String>
-        var a = ""
+        try {
+            et_napiwek.inputType =
+                InputType.TYPE_CLASS_NUMBER.or(InputType.TYPE_NUMBER_FLAG_DECIMAL)
+            et_godziny.inputType =
+                InputType.TYPE_CLASS_NUMBER.or(InputType.TYPE_NUMBER_FLAG_DECIMAL)
+
+            val dbHelper = DataBaseHelper(applicationContext)
+            val db = dbHelper.writableDatabase
+            val A: Array<String>
+            var a = ""
 //        var id_posady = listOf<Int>()
 
 
-        val cursor: Cursor = db.rawQuery("SELECT * FROM ${Table2Info.TABLE_NAME}", null)
+            val cursor: Cursor = db.rawQuery("SELECT * FROM ${Table2Info.TABLE_NAME}", null)
 
 
 
 
-        if (cursor != null) {
-            cursor.moveToFirst()
-            a = cursor.getString(1)
+            if (cursor != null) {
+                cursor.moveToFirst()
+                a = cursor.getString(1)
 
 
-            //id_posady.add(cursor.getString(0))
-            for (i in 1..cursor.getCount() - 1) {
-                cursor.moveToNext()
+                //id_posady.add(cursor.getString(0))
+                for (i in 1..cursor.getCount() - 1) {
+                    cursor.moveToNext()
 
 //                id_posady.add(cursor.getInt(0))
 
-                a += " ${cursor.getString(1)}"
+                    a += " ${cursor.getString(1)}"
 
 
-            }
+                }
 
-        } else {
-            Toast.makeText(
-                applicationContext,
-                "Nic nie ma w bazie danych w polu posada!",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-
-        A = a.split(" ").toTypedArray()
-
-
-
-        option = findViewById(R.id.spinner) as Spinner
-
-        option.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, A)
-//
-        option.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                posada = A[0]
-
-            }
-
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                posada = A.get(position)
-            }
-
-
-        }
-
-        var data = ""
-
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-        val formatted = current.format(formatter)
-
-        data= formatted
-
-
-        var Kalendarz1 = findViewById<CalendarView>(R.id.Kalendarz)
-        Kalendarz1?.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            if (month <= 8 && dayOfMonth <= 9) {
-                data = "0" + dayOfMonth + ".0" + (month + 1) + "." + year
-            } else if (month >= 9 && dayOfMonth <= 9) {
-                data = "0" + dayOfMonth + "." + (month + 1) + "." + year
-            } else if (month <= 8 && dayOfMonth >= 10) {
-                data = "" + dayOfMonth + ".0" + (month + 1) + "." + year
             } else {
-                data = "" + dayOfMonth + "." + (month + 1) + "." + year
+                Toast.makeText(
+                    applicationContext,
+                    "Nic nie ma w bazie danych w polu posada!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-        }
+
+
+            A = a.split(" ").toTypedArray()
+
+
+
+            option = findViewById(R.id.spinner) as Spinner
+
+            option.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, A)
+//
+            option.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    posada = A[0]
+
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    posada = A.get(position)
+                }
+
+
+            }
+
+            var data = ""
+
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            val formatted = current.format(formatter)
+
+            data = formatted
+
+
+            var Kalendarz1 = findViewById<CalendarView>(R.id.Kalendarz)
+            Kalendarz1?.setOnDateChangeListener { view, year, month, dayOfMonth ->
+                if (month <= 8 && dayOfMonth <= 9) {
+                    data = "0" + dayOfMonth + ".0" + (month + 1) + "." + year
+                } else if (month >= 9 && dayOfMonth <= 9) {
+                    data = "0" + dayOfMonth + "." + (month + 1) + "." + year
+                } else if (month <= 8 && dayOfMonth >= 10) {
+                    data = "" + dayOfMonth + ".0" + (month + 1) + "." + year
+                } else {
+                    data = "" + dayOfMonth + "." + (month + 1) + "." + year
+                }
+            }
 
 
 
@@ -216,9 +221,6 @@ class dodajZarobek : AppCompatActivity() {
                 }
 
 
-
-
-
                 val id_posady1 = id_posady.toString()
                 val id_aktywnosci1 = id_aktywnosci.toString()
                 val value_tab1 = ContentValues()
@@ -257,13 +259,26 @@ class dodajZarobek : AppCompatActivity() {
                     ).show()
                     return@setOnClickListener
                 }
-
-
             }
+        }
+            catch (e: Exception) {
+                bDodajZarobek.isEnabled=false
+                bDodajZarobek.isClickable=false
+
+                Toast.makeText(
+                    applicationContext,
+                    "Baza danych jest pusta, dodaj posadę aby móc dodać zarobek!!",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+
+
+        }
         }
 
 
-    }
+
 
 
 

@@ -32,7 +32,7 @@ class dzien : AppCompatActivity() {
         var A: Array<String>
         var A1: Array<String>
 
-
+  try{
         val dbHelper = DataBaseHelper(applicationContext)
         val db = dbHelper.writableDatabase
 
@@ -50,15 +50,15 @@ class dzien : AppCompatActivity() {
 
 
 
-              for (i in 1..cursorMiesiac.getCount() - 1) {
-                  cursorMiesiac.moveToNext()
+            for (i in 1..cursorMiesiac.getCount() - 1) {
+                cursorMiesiac.moveToNext()
 
 
 
-                  miesiace += " ${cursorMiesiac.getString(0)}"
+                miesiace += " ${cursorMiesiac.getString(0)}"
 
 
-              }
+            }
 
 
         } else {
@@ -96,106 +96,123 @@ class dzien : AppCompatActivity() {
         }
         var b1 = findViewById(R.id.pokazD_b) as Button
         b1.setOnClickListener {
-            val cursor1: Cursor = db.rawQuery(
-                "SELECT ${Table1Info.TABLE_COLUMN_DATA}, ${Table1Info.TABLE_COLUMN_GODZINY}, ${Table1Info.TABLE_COLUMN_NAPIWEK}, ${Table2Info.TABLE_COLUMN_NAZWA_POSADY}, ${Table2Info.TABLE_COLUMN_STAWKA}  FROM ${Table1Info.TABLE_NAME} " +
-                        "INNER JOIN ${Table2Info.TABLE_NAME} ON ${Table1Info.TABLE_COLUMN_ID_POSADA} = ${Table2Info.TABLE_NAME}.${BaseColumns._ID} WHERE  ${Table1Info.TABLE_COLUMN_DATA} LIKE '${miesiac}'  ",
-                null
-            )
+            try {
+                val cursor1: Cursor = db.rawQuery(
+                    "SELECT ${Table1Info.TABLE_COLUMN_DATA}, ${Table1Info.TABLE_COLUMN_GODZINY}, ${Table1Info.TABLE_COLUMN_NAPIWEK}, ${Table2Info.TABLE_COLUMN_NAZWA_POSADY}, ${Table2Info.TABLE_COLUMN_STAWKA}  FROM ${Table1Info.TABLE_NAME} " +
+                            "INNER JOIN ${Table2Info.TABLE_NAME} ON ${Table1Info.TABLE_COLUMN_ID_POSADA} = ${Table2Info.TABLE_NAME}.${BaseColumns._ID} WHERE  ${Table1Info.TABLE_COLUMN_DATA} LIKE '${miesiac}'  ",
+                    null
+                )
 
 
 
 
-            if (cursor1 != null) {
-                cursor1.moveToFirst()
-                data = cursor1.getString(0)
-                godziny = cursor1.getString(1)
-                napiwek = cursor1.getString(2)
-                posada = cursor1.getString(3)
-                stawka = cursor1.getString(4)
+                if (cursor1 != null) {
+                    cursor1.moveToFirst()
+                    data = cursor1.getString(0)
+                    godziny = cursor1.getString(1)
+                    napiwek = cursor1.getString(2)
+                    posada = cursor1.getString(3)
+                    stawka = cursor1.getString(4)
 
 
 
-                for (i in 1..cursor1.getCount() - 1) {
-                    cursor1.moveToNext()
+                    for (i in 1..cursor1.getCount() - 1) {
+                        cursor1.moveToNext()
 
 
 
-                    data += " ${cursor1.getString(0)}"
-                    godziny += " ${cursor1.getString(1)}"
-                    napiwek += " ${cursor1.getString(2)}"
-                    posada += " ${cursor1.getString(3)}"
-                    stawka += " ${cursor1.getString(4)}"
+                        data += " ${cursor1.getString(0)}"
+                        godziny += " ${cursor1.getString(1)}"
+                        napiwek += " ${cursor1.getString(2)}"
+                        posada += " ${cursor1.getString(3)}"
+                        stawka += " ${cursor1.getString(4)}"
 
+
+                    }
+
+                } else {
+                    Toast.makeText(
+                        applicationContext,
+                        "Nic nie ma w bazie danych w polu posada!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+
+                var Daty = data.split(" ").toTypedArray()
+                var Godziny = godziny.split(" ").toTypedArray()
+                var Napiwki = napiwek.split(" ").toTypedArray()
+                var Stawki = stawka.split(" ").toTypedArray()
+                var Posady = posada.split(" ").toTypedArray()
+
+
+                var r1 = Rekord(Daty[0], Posady[0], Godziny[0], Napiwki[0])
+                var Rows = arrayListOf<Rekord>(r1)
+
+
+
+
+
+                for (i in 1..Daty.count() - 1) {
+                    var r = Rekord(Daty[i], Posady[i], Godziny[i], Napiwki[i])
+                    Rows.add(r)
+                }
+
+
+                val adapter = GroupAdapter<GroupieViewHolder>()
+
+                adapter.add(RekordItem2(Rows[0]))
+
+
+                for (i in 1..Rows.count() - 1) {
+                    adapter.add(RekordItem2(Rows[i]))
 
                 }
 
-            } else {
+                rVDzien.adapter = adapter
+
+
+                var Stawki_Obl = arrayListOf<Double>(Stawki[0].toDouble())
+                var Godziny_Obl = arrayListOf<Double>(Godziny[0].toDouble())
+                var Napiwki_Obl = arrayListOf<Double>(Napiwki[0].toDouble())
+
+                for (i in 0..Godziny.count() - 1) {
+                    Stawki_Obl.add(Stawki[i].toDouble())
+                    Godziny_Obl.add(Godziny[i].toDouble())
+                    Napiwki_Obl.add(Napiwki[i].toDouble())
+                }
+
+                var Suma: Double = Stawki_Obl[0] * Godziny_Obl[0]
+                Suma += Napiwki_Obl[0]
+
+                for (i in 1..Godziny.count() - 1) {
+                    Suma += (Stawki_Obl[i] * Godziny_Obl[i])
+                    Suma += Napiwki_Obl[i]
+
+                }
+                var SumaX = Suma.toString()
+                suma_dzien.text = "Suma: " + SumaX
+
+
+            } catch (e: Exception) {
+
                 Toast.makeText(
                     applicationContext,
-                    "Nic nie ma w bazie danych w polu posada!",
-                    Toast.LENGTH_SHORT
+                    "Baza danych jest pusta, dodaj dane aby móc zobaczyć rejestr!!",
+                    Toast.LENGTH_LONG
                 ).show()
             }
-
-
-
-            var Daty = data.split(" ").toTypedArray()
-            var Godziny = godziny.split(" ").toTypedArray()
-            var Napiwki = napiwek.split(" ").toTypedArray()
-            var Stawki = stawka.split(" ").toTypedArray()
-            var Posady = posada.split(" ").toTypedArray()
-
-
-            var r1 = Rekord(Daty[0], Posady[0], Godziny[0], Napiwki[0])
-            var Rows = arrayListOf<Rekord>(r1)
-
-
-
-
-
-            for (i in 1..Daty.count() - 1) {
-                var r = Rekord(Daty[i], Posady[i], Godziny[i], Napiwki[i])
-                Rows.add(r)
-            }
-
-
-            val adapter = GroupAdapter<GroupieViewHolder>()
-
-            adapter.add(RekordItem2(Rows[0]))
-
-
-            for (i in 1..Rows.count() - 1) {
-                adapter.add(RekordItem2(Rows[i]))
-
-            }
-
-            rVDzien.adapter = adapter
-
-
-
-            var Stawki_Obl = arrayListOf<Double>(Stawki[0].toDouble())
-            var Godziny_Obl = arrayListOf<Double>(Godziny[0].toDouble())
-            var Napiwki_Obl = arrayListOf<Double>(Napiwki[0].toDouble())
-
-            for (i in 0..Godziny.count() - 1) {
-                Stawki_Obl.add(Stawki[i].toDouble())
-                Godziny_Obl.add(Godziny[i].toDouble())
-                Napiwki_Obl.add(Napiwki[i].toDouble())
-            }
-
-            var Suma: Double = Stawki_Obl[0] * Godziny_Obl[0]
-            Suma += Napiwki_Obl[0]
-
-            for (i in 1..Godziny.count() - 1) {
-                Suma += (Stawki_Obl[i] * Godziny_Obl[i])
-                Suma += Napiwki_Obl[i]
-
-            }
-            var SumaX = Suma.toString()
-            suma_dzien.text = "Suma: " + SumaX
-
-
         }
+    }
+        catch (e: Exception) {
+
+            Toast.makeText(
+                applicationContext,
+                "Baza danych jest pusta, dodaj dane aby móc zobaczyć rejestr!",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
     }
     class RekordItem2(val rekord: Rekord) : Item<GroupieViewHolder>() {
         override fun getLayout(): Int {

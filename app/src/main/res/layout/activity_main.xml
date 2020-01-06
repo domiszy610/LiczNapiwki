@@ -62,7 +62,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/round_buttons"
             android:padding="5dp"
-            android:text="Importuj dane do pliku"
+            android:text="Eksportuj dane do pliku"
             android:textColor="#4b0082"
             android:textSize="20dp" />
 
