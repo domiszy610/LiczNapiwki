@@ -1,9 +1,11 @@
 package com.example.oi
 
+import android.Manifest
 import android.R.attr
 import android.R.attr.data
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -11,9 +13,12 @@ import android.provider.BaseColumns
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
+import java.io.FileWriter
 import java.io.IOException
 
 
@@ -120,9 +125,13 @@ class ImportujDaneDoPliku : AppCompatActivity() {
                         var Posady = posada.split(" ").toTypedArray()
                         var Opisy = opis.split(" ").toTypedArray()
 
+                        val qponFile = File.createTempFile("qpon", "csv")
 
-                        val plik = StringBuilder()
-                        plik.append("Id,Data,iczba godzin,Posada,Stawka, Napiwek,Opis z dziennika aktywnosci")
+
+
+                        var plik : FileWriter? = null
+                        val CSV_HEADER ="Id,Data,iczba godzin,Posada,Stawka, Napiwek,Opis z dziennika aktywnosci"
+                            plik?.append(CSV_HEADER)
                         var z1 =
                             Zapis(
                                 Id[0],
@@ -146,8 +155,9 @@ class ImportujDaneDoPliku : AppCompatActivity() {
                             )
                             zapisy.add(r)
                         }
-                        for (z in zapisy) {
-                            plik.append("\n" + z.id + "," + z.data + "," + z.godziny + "," + z.napiwek + "," +  z.posada+ "," + z.opis )
+                        try {
+                            for (z in zapisy) {
+                                plik?.append("\n" + z.id + "," + z.data + "," + z.godziny + "," + z.napiwek + "," + z.posada + "," + z.opis)
 //                            data.append('|')
 //                            data.append(z.data)
 //                            data.append('|')
@@ -161,28 +171,32 @@ class ImportujDaneDoPliku : AppCompatActivity() {
 //                            data.append('|')
 //                            data.append(z.opis)
 //                            data.append('|')
+                            }
                         }
+                        catch(e:Exception){}
 
                         try {
-                            val out: FileOutputStream = openFileOutput("data.csv", Context.MODE_PRIVATE)
-                            out.write(plik.toString().toByteArray()) //CHYBA TU BLAD
-                            out.close()
+
+                            var MY_PERMISSIONS_REQUEST_LOCATION = 0
+                            if (ContextCompat.checkSelfPermission(this,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                                PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(
+                                    this,
+                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                                    MY_PERMISSIONS_REQUEST_LOCATION
+                                )
+                            } else {
+                                val sendIntent = Intent()
+                                sendIntent.action = Intent.ACTION_SEND
+                                sendIntent.putExtra(Intent.EXTRA_STREAM, qponFile)
+                                sendIntent.type = "text/csv"
+                                startActivity(Intent.createChooser(sendIntent, "SHARE"))
+                                Toast.makeText(applicationContext,"Plik został zapisany!", Toast.LENGTH_LONG).show()
+                            }
 
 
 
-
-                            var context :Context = getApplicationContext()
-                            var filelocation :File  = File(getFilesDir(), "data.csv")
-                            var path :Uri = FileProvider.getUriForFile(context, "com.example.oi.fileprovider", filelocation)
-                            var fileIntent : Intent  = Intent(Intent.ACTION_SEND)
-                            fileIntent.setType("text/csv")
-                            fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Data")
-                            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            fileIntent.putExtra(Intent.EXTRA_STREAM, path)
-                            startActivity(Intent.createChooser(fileIntent, "Send mail"))
-
-
-                            Toast.makeText(applicationContext,"Plik został zapisany!", Toast.LENGTH_LONG).show()
                         }
                         catch(e: Exception){
                             e.printStackTrace()
