@@ -127,9 +127,13 @@ class ImportujDaneDoPliku : AppCompatActivity() {
 
                         val qponFile = File.createTempFile("qpon", "csv")
 
+                        val context:Context = this
+
+                        val fliesDir ="data/data/com.android.example.oi"
 
 
-                        var plik : FileWriter? = null
+
+                        var plik : FileWriter =FileWriter("data.csv")
                         val CSV_HEADER ="Id,Data,iczba godzin,Posada,Stawka, Napiwek,Opis z dziennika aktywnosci"
                             plik?.append(CSV_HEADER)
                         var z1 =
@@ -177,19 +181,19 @@ class ImportujDaneDoPliku : AppCompatActivity() {
 
                         try {
 
-                            var MY_PERMISSIONS_REQUEST_LOCATION = 0
+                            var MY_PERMISSIONS_REQUEST_STORAGE = 0
                             if (ContextCompat.checkSelfPermission(this,
                                     Manifest.permission.READ_EXTERNAL_STORAGE) !=
                                 PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(
                                     this,
                                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                                    MY_PERMISSIONS_REQUEST_LOCATION
+                                    MY_PERMISSIONS_REQUEST_STORAGE
                                 )
                             } else {
                                 val sendIntent = Intent()
                                 sendIntent.action = Intent.ACTION_SEND
-                                sendIntent.putExtra(Intent.EXTRA_STREAM, qponFile)
+                                sendIntent.putExtra(Intent.EXTRA_STREAM, "data.csv")
                                 sendIntent.type = "text/csv"
                                 startActivity(Intent.createChooser(sendIntent, "SHARE"))
                                 Toast.makeText(applicationContext,"Plik został zapisany!", Toast.LENGTH_LONG).show()
@@ -202,7 +206,7 @@ class ImportujDaneDoPliku : AppCompatActivity() {
                             e.printStackTrace()
                             Toast.makeText(
                                 applicationContext,
-                                "Nie udało się zapisać pliku!",
+                                "Nie udało się zapisać pliku!" + e.message,
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -212,7 +216,7 @@ class ImportujDaneDoPliku : AppCompatActivity() {
 
                         Toast.makeText(
                             applicationContext,
-                            "Baza danych jest pusta, dodaj dane aby móc utworzyć plik!",
+                            "Baza danych jest pusta, dodaj dane aby móc utworzyć plik!" + e.message,
                             Toast.LENGTH_LONG
                         ).show()
                     }
