@@ -77,4 +77,10 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME ,null
 
     }
 
+    public fun dropnijTym(db: SQLiteDatabase?){
+        db?.execSQL("DROP TABLE ${Table1Info.TABLE_NAME}")
+        db?.execSQL("DROP TABLE ${Table2Info.TABLE_NAME}")
+        db?.execSQL("DROP TABLE ${Table3Info.TABLE_NAME}")
+    }
+
 }

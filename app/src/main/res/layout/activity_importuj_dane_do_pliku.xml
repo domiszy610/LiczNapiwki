@@ -11,14 +11,62 @@
         android:id="@+id/bEks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Eksportuj dane do pliku .csv"
-        android:textColor="#4b0082"
-        android:padding="5dp"
         android:background="@drawable/round_buttons"
+        android:padding="5dp"
+        android:text="Prześlij dane"
+        android:textColor="#4b0082"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.229" />
+        app:layout_constraintVertical_bias="0.442" />
+
+    <TextView
+        android:id="@+id/editText"
+        android:layout_width="333dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:text="Naciskając poniższy przycisk można trwale usunąć zawartość bazy danych."
+        android:textColor="#860258"
+        android:textSize="19dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.605" />
+
+
+    <Button
+        android:id="@+id/buDROP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_buttons_lighter"
+        android:padding="5dp"
+        android:text="usuń zawartość bazy danych"
+        android:textColor="#5F1E30"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.713" />
+
+    <TextView
+        android:id="@+id/tt"
+        android:layout_width="333dp"
+        android:layout_height="121dp"
+        android:ems="10"
+        android:text="Naciskając poniższy przycisk można wysłać zawartość bazy danych w treści emaila(wybierając gmaila) lub dodać do swojego Dysku Google w postaci dokumentu Google(wybierając zapis do Dysku)."
+        android:textColor="#4b0082"
+        android:textSize="17dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.253" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

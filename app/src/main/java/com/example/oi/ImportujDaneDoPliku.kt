@@ -8,27 +8,45 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.os.Environment.getExternalStoragePublicDirectory
 import android.provider.BaseColumns
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import java.io.File
-import java.io.FileOutputStream
-import java.io.FileWriter
-import java.io.IOException
+import androidx.core.net.toUri
+import kotlinx.android.synthetic.main.activity_importuj_dane_do_pliku.*
+import java.io.*
+import java.lang.StringBuilder
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 private val CSV_HEADER = "Id,Data,Liczba godzin,Posada,Stawka,Napiwek,Opis z dziennika aktywnosci"
 
 class ImportujDaneDoPliku : AppCompatActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_importuj_dane_do_pliku)
+        var data_zap = ""
+
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        val formatted = current.format(formatter)
+
+        data_zap = formatted
+
+        var NazwaPliku = "Rejestr_"+data_zap+".txt"
 
         var id = ""
         var daty = ""
@@ -38,11 +56,13 @@ class ImportujDaneDoPliku : AppCompatActivity() {
         var stawka = ""
         var opis =""
 
+        val dbHelper = DataBaseHelper(applicationContext)
+        val db = dbHelper.writableDatabase
+
         var bEks = findViewById(R.id.bEks) as Button
             try {
                 bEks.setOnClickListener {
-                    val dbHelper = DataBaseHelper(applicationContext)
-                    val db = dbHelper.writableDatabase
+
 
                     try {
 
@@ -125,17 +145,9 @@ class ImportujDaneDoPliku : AppCompatActivity() {
                         var Posady = posada.split(" ").toTypedArray()
                         var Opisy = opis.split(" ").toTypedArray()
 
-                        val qponFile = File.createTempFile("qpon", "csv")
-
-                        val context:Context = this
-
-                        val fliesDir ="data/data/com.android.example.oi"
-
-
-
-                        var plik : FileWriter =FileWriter("data.csv")
-                        val CSV_HEADER ="Id,Data,iczba godzin,Posada,Stawka, Napiwek,Opis z dziennika aktywnosci"
-                            plik?.append(CSV_HEADER)
+                        val CSV_HEADER ="Id | Data | liczba godzin | Posada | Stawka |  Napiwek | Opis z dziennika aktywnosci"
+                        var data = StringBuilder()
+                        data.append(CSV_HEADER)
                         var z1 =
                             Zapis(
                                 Id[0],
@@ -159,9 +171,9 @@ class ImportujDaneDoPliku : AppCompatActivity() {
                             )
                             zapisy.add(r)
                         }
-                        try {
+
                             for (z in zapisy) {
-                                plik?.append("\n" + z.id + "," + z.data + "," + z.godziny + "," + z.napiwek + "," + z.posada + "," + z.opis)
+                                data.append(("\n " + z.id + " | " + z.data + " | " + z.godziny + " | " + z.napiwek + " | " + z.posada + " | " + z.opis))
 //                            data.append('|')
 //                            data.append(z.data)
 //                            data.append('|')
@@ -176,27 +188,98 @@ class ImportujDaneDoPliku : AppCompatActivity() {
 //                            data.append(z.opis)
 //                            data.append('|')
                             }
-                        }
-                        catch(e:Exception){}
+
+                        var DataFinal = data.toString()
+
+
+
+
+
+
+
+
+
 
                         try {
 
+
+
                             var MY_PERMISSIONS_REQUEST_STORAGE = 0
-                            if (ContextCompat.checkSelfPermission(this,
+                            var MY_PERMISSIONS_REQUEST_STORAGE2 = 0
+                            if ((ContextCompat.checkSelfPermission(this,
                                     Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                                PackageManager.PERMISSION_GRANTED) {
+                                PackageManager.PERMISSION_GRANTED)) {
                                 ActivityCompat.requestPermissions(
                                     this,
                                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                                     MY_PERMISSIONS_REQUEST_STORAGE
                                 )
-                            } else {
-                                val sendIntent = Intent()
-                                sendIntent.action = Intent.ACTION_SEND
-                                sendIntent.putExtra(Intent.EXTRA_STREAM, "data.csv")
-                                sendIntent.type = "text/csv"
-                                startActivity(Intent.createChooser(sendIntent, "SHARE"))
-                                Toast.makeText(applicationContext,"Plik został zapisany!", Toast.LENGTH_LONG).show()
+
+                            }
+                            if(ContextCompat.checkSelfPermission(this,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                                    PackageManager.PERMISSION_GRANTED)
+                            {ActivityCompat.requestPermissions(
+                                    this,
+                            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                            MY_PERMISSIONS_REQUEST_STORAGE2)
+                            }
+                            else {
+//                                val sendIntent = Intent()
+//                                var path = writeFile(this,NazwaPliku, DataFinal)
+//                                var dir = path+"/${NazwaPliku}"
+//                                sendIntent.action = Intent.ACTION_SENDTO
+//                                sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(dir))
+//                                sendIntent.type = "text/csv"
+//                                startActivity(Intent.createChooser(sendIntent, "SHARE"))
+//                                Toast.makeText(applicationContext,"Plik został zapisany!", Toast.LENGTH_LONG).show()
+
+
+
+//                                if(isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//                                    val directory = "MyFileStorage"
+//                                    val file = File("text.txt")
+//                                    val fileW : FileWriter = FileWriter(file.path)
+//                                    try{
+//                                        fileW.write("AAAAA")
+//                                        fileW.write("F")
+//                                    } catch (e: Exception ) {
+//                                    e.printStackTrace()
+//                                }finally {
+//                                    try {
+//                                        if (fileW != null) {
+//                                            fileW.flush()
+//                                            fileW.close()
+//                                        }
+//                                    } catch (e: IOException ) {
+//                                        e.printStackTrace()
+//                                    }
+//                                }
+
+
+
+//                                    file.createNewFile()
+//                                    file.writeText("My Text", Charsets.UTF_8)
+
+
+//
+//                                    val fileURI = FileProvider.getUriForFile(
+//                                        this,
+//                                        "$packageName.fileprovider",
+//                                        file
+//
+//                                    )
+                                val s = "Rejestr na stan z dnia: "+data_zap
+
+                                    val emailIntent = Intent(Intent.ACTION_SEND).apply {
+                                        putExtra(Intent.EXTRA_SUBJECT, s )
+                                        putExtra(Intent.EXTRA_TEXT, DataFinal)
+//                                        putExtra(Intent.EXTRA_STREAM, fileURI)
+                                    }
+//                                    emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                   emailIntent.type = "text/html"
+                                   startActivity(emailIntent)
+
                             }
 
 
@@ -206,7 +289,7 @@ class ImportujDaneDoPliku : AppCompatActivity() {
                             e.printStackTrace()
                             Toast.makeText(
                                 applicationContext,
-                                "Nie udało się zapisać pliku!" + e.message,
+                                "Nie udało się zapisać pliku!",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -216,7 +299,7 @@ class ImportujDaneDoPliku : AppCompatActivity() {
 
                         Toast.makeText(
                             applicationContext,
-                            "Baza danych jest pusta, dodaj dane aby móc utworzyć plik!" + e.message,
+                            "Baza danych jest pusta, dodaj dane aby móc przesłać dane!",
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -224,9 +307,115 @@ class ImportujDaneDoPliku : AppCompatActivity() {
             }
             catch(e: Exception){
 
-                Toast.makeText(applicationContext,"Baza danych jest pusta, dodaj dane aby móc utworzyć plik!", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,"Baza danych jest pusta, dodaj dane aby móc przesłać dane!", Toast.LENGTH_LONG).show()
             }
 
+        buDROP.setOnClickListener {
+            try {
+                db?.execSQL("DROP TABLE ${Table1Info.TABLE_NAME}")
+                db?.execSQL("DROP TABLE ${Table2Info.TABLE_NAME}")
+                db?.execSQL("DROP TABLE ${Table3Info.TABLE_NAME}")
+                Toast.makeText(
+                    applicationContext,
+                    "Baza danych została usunięta!",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            catch(e: Exception){
+                Toast.makeText(
+                    applicationContext,
+                    "Baza danych jest już pusta!",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
 
+        }
+
+
+    }
+
+    private fun  isExternalStorageWritable(): Boolean{
+        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+            Log.i("State", "Wriatable")
+            return true
+        }
+        else{
+            return false
+        }
+
+
+    }
+    private fun  isExternalStorageReadable(): Boolean{
+        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(Environment.getExternalStorageState()) ){
+            Log.i("State", "Readable")
+            return true
+        }
+        else{
+            return false
+        }
+
+
+    }
+    public fun writeFile(context: Context, s:String, n :String): String{
+        var path :String =""
+        val filepath = "MyFileStorage"
+//region
+//        var myExternalFile: File
+//        if(isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+//            val filepath = "MyFileStorage"
+//            path = getExternalFilesDir(filepath).toString()
+//            myExternalFile = File(getExternalFilesDir(filepath),s)
+//            myExternalFile.writeText(n)
+////            File(getExternalFilesDir(filepath).toString()+"/${s}").writeText(n)
+//        try {
+//          val fileOutPutStream = FileOutputStream(myExternalFile)
+//            fileOutPutStream.write(n.toByteArray())
+//
+//               myExternalFile.writeText(n)
+//
+//
+//
+//
+//               fileOutPutStream.close()
+//               Toast.makeText(applicationContext,"ZAPISUJĘ DO PLIKU", Toast.LENGTH_LONG).show()
+//               } catch (e: IOException) {
+//               Toast.makeText(applicationContext,"NIE ZAPISUJĘ NIC DO PLIKU", Toast.LENGTH_LONG).show()
+//
+//        }
+//        }
+//endregion
+        val sd_main = File(Environment.getExternalStorageDirectory().toString()+"/"+filepath)
+        var success = true
+        path = Environment.getExternalStorageDirectory().toString()+"/"+filepath
+            if (!sd_main.exists()) {
+            success = sd_main.mkdir()
+        }
+        if (success) {
+            val sd = File(s)
+
+            if (!sd.exists()) {
+                success = sd.mkdir()
+            }
+            if (success) {
+                // directory exists or already created
+                val dest = File(sd, s)
+                try {
+                    // response is the data written to file
+                    PrintWriter(dest).use { out -> out.println(n) }
+                } catch (e: Exception) {
+                    // handle the exception
+                }
+
+            } else {
+                // directory creation is not successful
+            }
+        }
+
+        return path
+
+    }
+    public fun checkPermission(permission: String): Boolean{
+        var check :Int = ContextCompat.checkSelfPermission(this, permission)
+        return (check == PackageManager.PERMISSION_GRANTED)
     }
 }
