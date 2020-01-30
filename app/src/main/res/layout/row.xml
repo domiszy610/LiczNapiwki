@@ -20,7 +20,7 @@
             android:layout_gravity="center_horizontal">
 
             <TextView
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
@@ -62,7 +62,7 @@
 
             <TextView
                 android:id="@+id/data_tx"
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:textColor="#321266"
                 android:textSize="14sp" />

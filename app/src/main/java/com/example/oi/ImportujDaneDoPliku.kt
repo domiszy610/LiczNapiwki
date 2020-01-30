@@ -312,9 +312,9 @@ class ImportujDaneDoPliku : AppCompatActivity() {
 
         buDROP.setOnClickListener {
             try {
-                db?.execSQL("DROP TABLE ${Table1Info.TABLE_NAME}")
-                db?.execSQL("DROP TABLE ${Table2Info.TABLE_NAME}")
-                db?.execSQL("DROP TABLE ${Table3Info.TABLE_NAME}")
+                db?.execSQL("DELETE FROM ${Table1Info.TABLE_NAME}")
+                db?.execSQL("DELETE FROM ${Table2Info.TABLE_NAME}")
+                db?.execSQL("DELETE FROM ${Table3Info.TABLE_NAME}")
                 Toast.makeText(
                     applicationContext,
                     "Baza danych została usunięta!",
